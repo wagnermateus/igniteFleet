@@ -6,6 +6,7 @@ import { Container, Title, Slogan } from "./styles";
 import backgroundImg from "../../assets/background.png";
 import { Button } from "../../components/Button";
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "@env";
+import { Alert } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -30,10 +31,12 @@ export function SignIn() {
   useEffect(() => {
     if (response?.type === "success") {
       if (response.authentication?.idToken) {
-        console.log(
-          "TOKEN DE AUTENTICAÇÃO =>",
-          response.authentication.idToken
+      } else {
+        Alert.alert(
+          "Entrar",
+          "Não foi possível conectar-se a sua conta google."
         );
+        setIsAuthenticating(false);
       }
     }
   }, [response]);
