@@ -15,6 +15,7 @@ import { StatusBar } from "react-native";
 import { Home } from "./src/screens/home";
 
 import { REALM_APP_ID } from "@env";
+import { Routes } from "./src/routes";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -35,7 +36,7 @@ export default function App() {
           translucent
         />
         <UserProvider fallback={SignIn}>
-          <Home />
+          <Routes />
         </UserProvider>
       </ThemeProvider>
     </AppProvider>
