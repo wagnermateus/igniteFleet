@@ -7,14 +7,14 @@ import {
 
 import { AppProvider, UserProvider } from "@realm/react";
 
-import { REALM_APP_ID } from "@env";
-
 import theme from "./src/theme";
 
 import { SignIn } from "./src/screens/SignIn";
 import { Loading } from "./src/components/Loading";
 import { StatusBar } from "react-native";
 import { Home } from "./src/screens/home";
+
+import { REALM_APP_ID } from "@env";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
