@@ -20,6 +20,8 @@ import { REALM_APP_ID } from "@env";
 import { Routes } from "./src/routes";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RealmProvider, syncConfig } from "./src/libs/realm";
+import { TopMessage } from "./src/components/TopMessage";
+import { WifiSlash } from "phosphor-react-native";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -37,6 +39,7 @@ export default function App() {
         <SafeAreaProvider
           style={{ flex: 1, backgroundColor: theme.COLORS.GRAY_800 }}
         >
+          <TopMessage title="Você está off-line" icon={WifiSlash} />
           <StatusBar
             barStyle="light-content"
             backgroundColor="transparent"
