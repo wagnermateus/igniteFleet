@@ -90,6 +90,7 @@ export function Home() {
         type: "info",
         text1: "Todos os dados estão sincronizado.",
       });
+      setPercentageToSync(null);
     }
 
     if (percentage < 100) {
