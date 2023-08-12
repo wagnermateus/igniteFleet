@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "@realm/react";
-import { useForegroundPermissions } from "expo-location";
+import {
+  useForegroundPermissions,
+  watchPositionAsync,
+  LocationAccuracy,
+  LocationSubscription,
+} from "expo-location";
 import { useRealm } from "../../libs/realm";
 import { Historic } from "../../libs/realm/schemas/Historic";
 import { Button } from "../../components/Button";
@@ -71,6 +76,25 @@ export function Departure() {
     requestLocationForegroundPermission();
   }, []);
 
+  useEffect(() => {
+    if (!locationForegroundPermission?.granted) {
+      return;
+    }
+
+    let subscription: LocationSubscription;
+
+    watchPositionAsync(
+      {
+        accuracy: LocationAccuracy.High,
+        timeInterval: 1000,
+      },
+      (location) => {
+        console.log(location);
+      }
+    ).then((response) => (subscription = response));
+
+    return () => subscription.remove();
+  }, [locationForegroundPermission?.granted]);
   if (!locationForegroundPermission?.granted) {
     return (
       <Container>
