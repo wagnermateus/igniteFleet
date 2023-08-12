@@ -14,8 +14,11 @@ import {
   saveLastSyncTimestamp,
 } from "../../libs/asyncStorage/syncStorage";
 import Toast from "react-native-toast-message";
+import { CloudArrowUp } from "phosphor-react-native";
+import { TopMessage } from "../../components/TopMessage";
 
 export function Home() {
+  const [percetageToSync, setPercentageToSync] = useState<string | null>(null);
   const [vehicleInUse, setVehicleInUse] = useState<Historic | null>(null);
   const [vehicleHistoric, setVehicleHistoric] = useState<HistoricCardProps[]>(
     []
@@ -88,6 +91,10 @@ export function Home() {
         text1: "Todos os dados estão sincronizado.",
       });
     }
+
+    if (percentage < 100) {
+      setPercentageToSync(`${percentage.toFixed(0)}% sincronizado.`);
+    }
   }
   useEffect(() => {
     fetchVehicleInUse();
@@ -132,6 +139,9 @@ export function Home() {
   }, []);
   return (
     <Container>
+      {percetageToSync && (
+        <TopMessage title={percetageToSync} icon={CloudArrowUp} />
+      )}
       <HomeHeader />
 
       <Content>
