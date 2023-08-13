@@ -9,7 +9,7 @@ export async function getAddressLocation({
       latitude,
       longitude,
     });
-    console.log(addressResponse[0]);
+
     return addressResponse[0].subregion;
   } catch (error) {
     console.log(error);
