@@ -144,7 +144,7 @@ export function Departure() {
             <Map
               coordinates={[
                 { latitude: -8.8486, longitude: 13.275 },
-                { latitude: -8.9073, longitude: 13.196 },
+                { latitude: -8.8678, longitude: 13.2 },
               ]}
             />
           )}
