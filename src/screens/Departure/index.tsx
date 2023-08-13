@@ -6,20 +6,26 @@ import {
   watchPositionAsync,
   LocationAccuracy,
   LocationSubscription,
+  LocationObjectCoords,
 } from "expo-location";
 import { useRealm } from "../../libs/realm";
 import { Historic } from "../../libs/realm/schemas/Historic";
+
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
-import { LicensePlateInput } from "../../components/LicensePlateInput";
+import { Loading } from "../../components/Loading";
+import { Map } from "../../components/Map";
+import { LocationInfo } from "../../components/LocationInfo";
 import { TextAreaInput } from "../../components/TextAreaInput";
+
+import { LicensePlateInput } from "../../components/LicensePlateInput";
+
 import { Container, Content, Message } from "./styles";
 import { TextInput, ScrollView, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { licensePlateValidate } from "../../utils/licensePlateValidate";
 import { getAddressLocation } from "../../utils/getAddressLocation";
-import { Loading } from "../../components/Loading";
-import { LocationInfo } from "../../components/LocationInfo";
+
 import { CarSimple } from "phosphor-react-native";
 
 export function Departure() {
@@ -28,6 +34,8 @@ export function Departure() {
   const [isRegistering, setIsResgistering] = useState(false);
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const [currentAddress, setCurrentAddress] = useState<string | null>(null);
+  const [currentCoords, setCurrentCoords] =
+    useState<LocationObjectCoords | null>(null);
 
   const [locationForegroundPermission, requestLocationForegroundPermission] =
     useForegroundPermissions();
@@ -95,6 +103,7 @@ export function Departure() {
         timeInterval: 1000,
       },
       (location) => {
+        setCurrentCoords(location.coords);
         getAddressLocation(location.coords)
           .then((address) => {
             if (address) {
@@ -131,6 +140,7 @@ export function Departure() {
       <Header title="Saída" />
       <KeyboardAwareScrollView extraHeight={100}>
         <ScrollView>
+          {currentCoords && <Map coordinates={[currentCoords]} />}
           <Content>
             {currentAddress && (
               <LocationInfo
