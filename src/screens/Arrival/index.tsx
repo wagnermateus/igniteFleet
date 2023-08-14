@@ -22,6 +22,7 @@ import { Alert } from "react-native";
 import { getLastAsyncTimestamp } from "../../libs/asyncStorage/syncStorage";
 import { useEffect, useState } from "react";
 import { stopLocationTask } from "../../tasks/backgroundLocationTask";
+import { getStorageLocations } from "../../libs/asyncStorage/locationStorage";
 
 type RouteParamProps = {
   id: string;
@@ -74,11 +75,19 @@ export function Arrival() {
       Alert.alert("Erro", "Não foi possível registar a chegada do veículo.");
     }
   }
+
+  async function getLocationsInfo() {
+    const lastSync = await getLastAsyncTimestamp();
+    const updatedAt = historic!.updated_at.getTime();
+
+    setDataNotSynced(updatedAt > lastSync);
+
+    const locationsStorage = await getStorageLocations();
+  }
+
   useEffect(() => {
-    getLastAsyncTimestamp().then((lastSync) =>
-      setDataNotSynced(historic!.updated_at.getTime() > lastSync)
-    );
-  }, []);
+    getLocationsInfo();
+  }, [historic]);
   return (
     <Container>
       <Header title={title} />
