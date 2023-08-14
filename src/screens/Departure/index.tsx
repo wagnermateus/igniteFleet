@@ -28,6 +28,7 @@ import { licensePlateValidate } from "../../utils/licensePlateValidate";
 import { getAddressLocation } from "../../utils/getAddressLocation";
 
 import { CarSimple } from "phosphor-react-native";
+import { startLocationTask } from "../../components/tasks/backgroundLocationTask";
 
 export function Departure() {
   const [description, setDescription] = useState("");
@@ -82,6 +83,7 @@ export function Departure() {
           'É necessário permitir que o App tenha acesso localização em segundo plano. Acesse as configurações do dispositivo e habilite "Permitir o tempo todo."'
         );
       }
+      await startLocationTask();
 
       realm.write(() => {
         realm.create(
