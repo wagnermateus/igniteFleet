@@ -21,7 +21,7 @@ import { X } from "phosphor-react-native";
 import { Alert } from "react-native";
 import { getLastAsyncTimestamp } from "../../libs/asyncStorage/syncStorage";
 import { useEffect, useState } from "react";
-import { stopLocationTask } from "../../components/tasks/backgroundLocationTask";
+import { stopLocationTask } from "../../tasks/backgroundLocationTask";
 
 type RouteParamProps = {
   id: string;

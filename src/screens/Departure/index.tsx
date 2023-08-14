@@ -28,7 +28,7 @@ import { licensePlateValidate } from "../../utils/licensePlateValidate";
 import { getAddressLocation } from "../../utils/getAddressLocation";
 
 import { CarSimple } from "phosphor-react-native";
-import { startLocationTask } from "../../components/tasks/backgroundLocationTask";
+import { startLocationTask } from "../../tasks/backgroundLocationTask";
 
 export function Departure() {
   const [description, setDescription] = useState("");
