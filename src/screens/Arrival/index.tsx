@@ -13,6 +13,7 @@ import {
 import { useObject, useRealm } from "../../libs/realm";
 import { Historic } from "../../libs/realm/schemas/Historic";
 import { BSON } from "realm";
+import dayjs from "dayjs";
 
 import { Header } from "../../components/Header";
 import { Button } from "../../components/Button";
@@ -27,6 +28,8 @@ import { stopLocationTask } from "../../tasks/backgroundLocationTask";
 import { getStorageLocations } from "../../libs/asyncStorage/locationStorage";
 import { LatLng } from "react-native-maps";
 import { Locations } from "../../components/Locations";
+import { LocationInfoProps } from "../../components/LocationInfo";
+import { getAddressLocation } from "../../utils/getAddressLocation";
 
 type RouteParamProps = {
   id: string;
@@ -35,6 +38,10 @@ type RouteParamProps = {
 export function Arrival() {
   const [dataNotSynced, setDataNotSynced] = useState(false);
   const [coordinates, setCoordinates] = useState<LatLng[]>([]);
+  const [departure, setDeparture] = useState<LocationInfoProps>(
+    {} as LocationInfoProps
+  );
+  const [arrival, setArrival] = useState<LocationInfoProps | null>(null);
 
   const route = useRoute();
 
@@ -101,6 +108,28 @@ export function Arrival() {
     } else {
       setCoordinates(historic?.coords ?? []);
     }
+    if (historic?.coords[0]) {
+      const departureStreetName = await getAddressLocation(historic?.coords[0]);
+
+      setDeparture({
+        label: `Saíndo em ${departureStreetName ?? ""}`,
+        description: dayjs(new Date(historic?.coords[0].timestamp)).format(
+          "DD/MM/YYYY [às] HH:mm"
+        ),
+      });
+    }
+
+    if (historic?.status === "arrival") {
+      const lastLocation = historic.coords[historic.coords.length - 1];
+      const arrivalStreetName = await getAddressLocation(lastLocation);
+
+      setArrival({
+        label: `Chegando em ${arrivalStreetName ?? ""}`,
+        description: dayjs(new Date(lastLocation.timestamp)).format(
+          "DD/MM/YYYY [às] HH:mm"
+        ),
+      });
+    }
   }
 
   useEffect(() => {
@@ -112,10 +141,7 @@ export function Arrival() {
       {coordinates.length > 0 && <Map coordinates={coordinates} />}
 
       <Content>
-        <Locations
-          departure={{ label: "Saída", description: "Saída teste" }}
-          arrival={{ label: "Chegada", description: "Chegada teste" }}
-        />
+        <Locations departure={departure} arrival={arrival} />
         <Label>Placa do veículo</Label>
 
         <LicensePlate> {historic?.license_plate}</LicensePlate>
