@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { stopLocationTask } from "../../tasks/backgroundLocationTask";
 import { getStorageLocations } from "../../libs/asyncStorage/locationStorage";
 import { LatLng } from "react-native-maps";
+import { Locations } from "../../components/Locations";
 
 type RouteParamProps = {
   id: string;
@@ -111,6 +112,10 @@ export function Arrival() {
       {coordinates.length > 0 && <Map coordinates={coordinates} />}
 
       <Content>
+        <Locations
+          departure={{ label: "Saída", description: "Saída teste" }}
+          arrival={{ label: "Chegada", description: "Chegada teste" }}
+        />
         <Label>Placa do veículo</Label>
 
         <LicensePlate> {historic?.license_plate}</LicensePlate>
