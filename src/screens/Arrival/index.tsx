@@ -30,6 +30,7 @@ import { LatLng } from "react-native-maps";
 import { Locations } from "../../components/Locations";
 import { LocationInfoProps } from "../../components/LocationInfo";
 import { getAddressLocation } from "../../utils/getAddressLocation";
+import { Loading } from "../../components/Loading";
 
 type RouteParamProps = {
   id: string;
@@ -42,6 +43,7 @@ export function Arrival() {
     {} as LocationInfoProps
   );
   const [arrival, setArrival] = useState<LocationInfoProps | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const route = useRoute();
 
@@ -130,11 +132,17 @@ export function Arrival() {
         ),
       });
     }
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
     getLocationsInfo();
   }, [historic]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <Container>
       <Header title={title} />
